@@ -1,0 +1,14 @@
+export default {
+  ALMOST_BLACK: '#323232',
+  ALMOST_BLACK_01: '#282828',
+  BLUE: '#007AFF',
+  BLUE_01: '#5357BD',
+  BLUE_02: '#016CCB',
+  ERROR: '#F13A59',
+  PRIMARY_01: '#007AFF',
+  GREY_01: '#6B7280',
+  GREY_02: '#E9EDF4',
+  WHITE_TRANSPARENT: 'rgba(255, 255, 255, 0.5)',
+  WHITE: '#FFFFFF',
+  WHITE_02: '#FAFAFA',
+};

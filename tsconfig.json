@@ -13,6 +13,15 @@
     "resolveJsonModule": true /* Allows importing modules with a ‘.json’ extension, which is a common practice in node projects. */,
     "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
     "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["./src/assets/*"],
+      "@routes": ["./src/routes/index.tsx"],
+      "@pages/*": ["./src/pages/*"],
+      "@viewModels/*": ["./src/viewModels/*"],
+      "@models/*": ["./src/models/*"],
+      "@theme/*": ["./src/theme/*"],
+    },
     "types": ["node"]
   },
 }
