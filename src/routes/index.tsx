@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // page
 import SplashPage from '@pages/SplashPage';
 import TransactionsPage from '@pages/TransactionsPage';
+import TransactionDetailPage from '@pages/TransactionDetail';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,6 +21,11 @@ const Main: React.FC = () => {
         <Stack.Screen
           name="Transactions"
           component={TransactionsPage}
+          options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="TransactionDetail"
+          component={TransactionDetailPage}
           options={{headerShown: true}}
         />
       </Stack.Navigator>

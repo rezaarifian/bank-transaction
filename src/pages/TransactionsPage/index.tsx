@@ -1,16 +1,22 @@
 import React, {useEffect} from 'react';
-import {Text, View} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {FlatList, View} from 'react-native';
+
+// models
+import {NavigationProps} from '@models/Transactions';
+
+// view models
+import { useTransactionsViewModel } from '@viewModels/Transactions';
+
+// components
+import TransactionItem from '@components/TransactionItem';
 
 // styles
 import Colors from '@theme/Colors';
 import styles from './styles';
 
-type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Transactions'>;
-};
+const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
+  const {transactionArray, navigateTransactionDetail} = useTransactionsViewModel({navigation});
 
-const TransactionsPage: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -22,15 +28,12 @@ const TransactionsPage: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text
-        // size={24}
-        // family={'plusJakartaBold'}
-        // lineHeight={28}
-        numberOfLines={1}
-        style={styles.marginBottom24}
-      >
-        Transactions List
-      </Text>
+      <FlatList
+        data={transactionArray}
+        keyExtractor={(item) => item?.id}
+        renderItem={({ item }) => <TransactionItem transaction={item} onPress={navigateTransactionDetail}/>}
+        contentContainerStyle={styles.list}
+      />
     </View>
   );
 };

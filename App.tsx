@@ -8,6 +8,10 @@ import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 
+// store
+import {Provider} from 'react-redux';
+import {store} from '@stores';
+
 // routes screen
 import Main from '@routes';
 
@@ -19,13 +23,13 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <>
+    <Provider store={store}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <Main />
-    </>
+    </Provider>
   );
 }
 
