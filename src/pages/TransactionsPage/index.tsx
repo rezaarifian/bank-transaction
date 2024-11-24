@@ -10,6 +10,7 @@ import {useTransactionsViewModel} from '@viewModels/Transactions';
 // components
 import TransactionItem from '@components/TransactionItem';
 import SearchBar from '@components/SearchBar';
+import SortModal from '@components/SortModal';
 
 // styles
 import Colors from '@theme/Colors';
@@ -21,7 +22,10 @@ const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
     setSearchQuery,
     searchQuery,
     filteredTransactions,
-    onPressFilter,
+    onPressSorted,
+    sortModalVisible,
+    selectedSort,
+    setSelectedSort,
   } = useTransactionsViewModel({navigation});
 
   useEffect(() => {
@@ -36,7 +40,7 @@ const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Search Bar */}
-      <SearchBar query={searchQuery} onChange={setSearchQuery} onPressFilter={onPressFilter} />
+      <SearchBar query={searchQuery} onChange={setSearchQuery} onPressSorted={onPressSorted} />
       <FlatList
         data={filteredTransactions}
         keyExtractor={item => item?.id}
@@ -48,6 +52,13 @@ const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
         )}
         contentContainerStyle={styles.list}
       />
+      <SortModal
+        visible={sortModalVisible}
+        onClose={onPressSorted}
+        selectedOption={selectedSort}
+        onSelect={setSelectedSort}
+      />
+
     </View>
   );
 };

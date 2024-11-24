@@ -17,6 +17,8 @@ export function useTransactionsViewModel({navigation}: NavigationProps) {
   const transactionArray = Object.values(transactions);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortModalVisible, setSortModalVisible] = useState(false);
+  const [selectedSort, setSelectedSort] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(getTransactionsList());
@@ -25,22 +27,43 @@ export function useTransactionsViewModel({navigation}: NavigationProps) {
 
   const filteredTransactions = useMemo(() => {
     const query = searchQuery.toLowerCase();
-    return transactionArray.filter((transaction) => {
-      return (
-        transaction.beneficiary_name.toLowerCase().includes(query) ||
-        transaction.sender_bank.toLowerCase().includes(query) ||
-        transaction.beneficiary_bank.toLowerCase().includes(query) ||
-        transaction.amount.toString().includes(query)
-      );
-    });
-  }, [searchQuery, transactionArray]);
+    const filtered = transactionArray.filter((transaction) =>
+      [transaction.beneficiary_name, transaction.sender_bank, transaction.beneficiary_bank, transaction.amount.toString()]
+        .some((field) => field.toLowerCase().includes(query))
+    );
+
+    switch (selectedSort) {
+      case 'name-asc':
+        return filtered.sort((a, b) =>
+          a.beneficiary_name.localeCompare(b.beneficiary_name)
+        );
+      case 'name-desc':
+        return filtered.sort((a, b) =>
+          b.beneficiary_name.localeCompare(a.beneficiary_name)
+        );
+      case 'date-newest':
+        return filtered.sort(
+          (a, b) =>
+            new Date(b.completed_at).getTime() -
+            new Date(a.completed_at).getTime()
+        );
+      case 'date-oldest':
+        return filtered.sort(
+          (a, b) =>
+            new Date(a.completed_at).getTime() -
+            new Date(b.completed_at).getTime()
+        );
+      default:
+        return filtered;
+    }
+  }, [searchQuery, transactionArray, selectedSort]);
 
   const navigateTransactionDetail = (item: Transaction) => {
     navigation.push('TransactionDetail', {transactionItem: item});
   };
 
-  const onPressFilter = () => {
-    alert('onPressFilter');
+  const onPressSorted = () => {
+    setSortModalVisible(!sortModalVisible);
   };
 
   return {
@@ -49,6 +72,9 @@ export function useTransactionsViewModel({navigation}: NavigationProps) {
     setSearchQuery,
     searchQuery,
     filteredTransactions,
-    onPressFilter,
+    onPressSorted,
+    sortModalVisible,
+    selectedSort,
+    setSelectedSort,
   };
 }
