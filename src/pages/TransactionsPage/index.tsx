@@ -5,17 +5,24 @@ import {FlatList, View} from 'react-native';
 import {NavigationProps} from '@models/Transactions';
 
 // view models
-import { useTransactionsViewModel } from '@viewModels/Transactions';
+import {useTransactionsViewModel} from '@viewModels/Transactions';
 
 // components
 import TransactionItem from '@components/TransactionItem';
+import SearchBar from '@components/SearchBar';
 
 // styles
 import Colors from '@theme/Colors';
 import styles from './styles';
 
 const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
-  const {transactionArray, navigateTransactionDetail} = useTransactionsViewModel({navigation});
+  const {
+    navigateTransactionDetail,
+    setSearchQuery,
+    searchQuery,
+    filteredTransactions,
+    onPressFilter,
+  } = useTransactionsViewModel({navigation});
 
   useEffect(() => {
     navigation.setOptions({
@@ -28,10 +35,17 @@ const TransactionsPage: React.FC<NavigationProps> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      {/* Search Bar */}
+      <SearchBar query={searchQuery} onChange={setSearchQuery} onPressFilter={onPressFilter} />
       <FlatList
-        data={transactionArray}
-        keyExtractor={(item) => item?.id}
-        renderItem={({ item }) => <TransactionItem transaction={item} onPress={navigateTransactionDetail}/>}
+        data={filteredTransactions}
+        keyExtractor={item => item?.id}
+        renderItem={({item}) => (
+          <TransactionItem
+            transaction={item}
+            onPress={navigateTransactionDetail}
+          />
+        )}
         contentContainerStyle={styles.list}
       />
     </View>
