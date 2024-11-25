@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 // components
 import Text from '@components/Text';
@@ -39,7 +40,7 @@ const TransactionDetailPage: React.FC<Props> = ({navigation, route}) => {
           ID TRANSAKSI:{' '}
           <Text style={styles.transactionIdHighlight}>#{transactionItem?.id}</Text>
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => Clipboard.setString(transactionItem?.id)}>
           <Text style={styles.copyIcon}>Copy</Text>
         </TouchableOpacity>
       </View>
